@@ -55,12 +55,12 @@ class Library {
     }
     //Task 4 Implemented Book Borrowing
     lendBook(borrowerId, isbn){
-        const book = this.books.find(book => book.isbn === isbn);
+        const book = this.books.find(book => book.isbn === isbn); // finds the book using isbn
         const borrower = this.borrowers.find(borrower => borrower.borrowerId === borrowerId);
         if (book && borrower){
             if(book.copies > 0){
-                book.updateCopies(-1);
-                borrower.borrowBook(book);
+                book.updateCopies(-1); // updates the copies
+                borrower.borrowBook(book); // borrows the selected book
             }
             else {
                 console.log("No Copies Available");
@@ -69,4 +69,26 @@ class Library {
             console.log("Book or Borrower Not Found")
         }
     }
-}
+    //Task 5 Implemented Book Returns
+    returnBook(borrowerId, isbn){
+        const borrower = this.borrowers.find(b => b.borrowerId === borrowerId); // finds borrower by id
+        const book = this.books.find(b => b.isbn === isbn); // finds book using isbn
+        if (book){
+            book.updateCopies(1); // updates the copies
+            if(borrower){
+                borrower.returnBook(book); // returns book
+            }
+        }
+    }
+}// Class for library
+const library = new Library();
+library.addBook(book1); // add book to the library
+library.listBooks(); // Title: The Great Gatsby, Author: F.Scott Fitzgerald, ISBN: 123456, Copies: 3
+
+library.lendBook(201, 123456);//borrows the book
+console.log(book1.getDetails());
+console.log(borrower1.borrowedBooks); //[The Great Gatsby]
+
+library.returnBook(201, 123456); //returns the book
+console.log(book1.getDetails());
+console.log(borrower1.borrowedBooks); //[]
